@@ -6,10 +6,10 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   // View all users (clients + counselors)
- @Get('clients')
-getAllClients() {
-  return this.adminService.getAllClients();
-}
+  @Get('clients')
+  getAllClients() {
+    return this.adminService.getAllClients();
+  }
 
   // Activate or Deactivate a Counselor
   @Patch('counselor/:id/status/:status')
@@ -21,9 +21,9 @@ getAllClients() {
   }
 
   @Get('counselors')
-getAllCounselors() {
-  return this.adminService.getAllCounselorsWithStatus();
-}
+  getAllCounselors() {
+    return this.adminService.getAllCounselorsWithStatus();
+  }
 
   // Approve Counselor
   @Patch('counselor/:id/approve')

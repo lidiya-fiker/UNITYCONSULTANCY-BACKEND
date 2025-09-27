@@ -19,7 +19,7 @@ import { NotificationModule } from '../Notification/notification.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Audit, AccountVerification, Counselor]),
-     // TypeORM entities
+    // TypeORM entities
     JwtModule.register({
       secret: process.env.JWT_ACCESS_TOKEN_SECRET, // JWT secret
       signOptions: {
@@ -30,7 +30,7 @@ import { NotificationModule } from '../Notification/notification.module';
     ClientModule,
     CounselorModule,
     PassportModule,
-    NotificationModule
+    NotificationModule,
   ],
   controllers: [UserController],
   providers: [

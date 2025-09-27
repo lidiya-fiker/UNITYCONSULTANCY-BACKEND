@@ -13,7 +13,6 @@ import { Payment } from './client/entities/payment.entity';
 
 import { Notification } from './Notification/entities/notification.entity';
 
-
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
@@ -24,7 +23,6 @@ export const dataSourceOptions: DataSourceOptions = {
   synchronize: true,
   logging: true,
   entities: [
-
     User,
     Client,
     AccountVerification,
@@ -36,12 +34,17 @@ export const dataSourceOptions: DataSourceOptions = {
     Schedule,
     Booking,
 
-    User,Client,AccountVerification,Article,Booking,Counselor,Schedule,Review,Notification
+    User,
+    Client,
+    AccountVerification,
+    Article,
+    Booking,
+    Counselor,
+    Schedule,
+    Review,
+    Notification,
   ],
-  migrations: [
-    'src/migrations/**/*.ts'
-
-  ],
+  migrations: ['src/migrations/**/*.ts'],
 
   subscribers: [],
 };

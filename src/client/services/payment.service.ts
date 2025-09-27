@@ -12,7 +12,6 @@ import { BookingService } from './booking.servicee'; // Fixed typo: 'booking.ser
 import { NotificationService } from '../../Notification/service/notification.service';
 import { User } from '../../auth/entity/user.entity'; // Import User entity
 
-
 @Injectable()
 export class PaymentService {
   constructor(
@@ -62,11 +61,12 @@ export class PaymentService {
       payment.chapaRedirectUrl = `${chapaResponse.data.data.checkout_url}?txRef=${payment.transactionReference}`;
       await this.paymentRepository.save(payment);
 
-      
-
       return payment;
     } catch (error) {
-      console.error('Chapa init error:', error?.response?.data || error.message);
+      console.error(
+        'Chapa init error:',
+        error?.response?.data || error.message,
+      );
       throw new BadRequestException('Failed to initialize payment with Chapa');
     }
   }
@@ -114,15 +114,13 @@ export class PaymentService {
           message: 'payment is successful!!',
           type: 'SYSTEM',
         });
-
-        
       }
 
       await this.bookingService.createBookingFromPayment(payment);
 
       return payment;
     } catch (error) {
-      throw new BadRequestException('Payment verification failed');
+      throw new BadRequestException('Payment verification failed', error);
     }
   }
 

@@ -11,7 +11,7 @@ import { Schedule } from 'src/counselor/entities/schedule.entity';
 import { Payment } from '../entities/payment.entity';
 import { ZoomService } from 'src/counselor/service/zoom.service';
 import { NotificationService } from '../../Notification/service/notification.service';
-import { User } from '../../auth/entity/user.entity';
+import { User } from '../../auth/entity/user.entity'; // Import User entity
 
 interface TimeSlot {
   id: string;
@@ -126,10 +126,9 @@ export class BookingService {
           relations: { schedule: true },
         });
 
-        // Remove old booking
-
-        const oldScheduleId = oldBooking.schedule?.id;
-        await this.bookingRepository.remove(oldBooking);
+        if (!oldBooking) {
+          throw new NotFoundException('Old booking not found');
+        }
 
         // Mark old schedule as available again
         if (oldBooking.schedule) {
@@ -165,6 +164,7 @@ export class BookingService {
             'The new schedule slot is already booked or unavailable',
           );
         }
+
         // Create new booking
         const newBooking = transactionalEntityManager.create(Booking, {
           scheduleId: newScheduleId,
@@ -268,7 +268,7 @@ export class BookingService {
       relations: {
         schedule: {
           counselor: {
-            user: true, // Ensure user relation is loaded
+            user: true,
           },
         },
       },
@@ -276,9 +276,10 @@ export class BookingService {
 
     return bookings.map((booking) => ({
       id: booking.id,
+      clientId: booking.clientId, // Add clientId
       date: booking.schedule?.date,
       startTime: booking.schedule?.startTime,
-      endTime: booking.schedule?.endTime,
+      endTime: booking.schedule?.startTime,
       zoomJoinUrl: booking.zoomJoinUrl,
       counselor: booking.schedule?.counselor
         ? {
@@ -286,6 +287,8 @@ export class BookingService {
             firstName: booking.schedule.counselor.user?.firstName || 'Unknown',
             lastName: booking.schedule.counselor.user?.lastName || '',
             image: booking.schedule.counselor.profilePicture || null,
+            specialization:
+              booking.schedule.counselor.specialization || 'Counselor',
           }
         : null,
     }));
