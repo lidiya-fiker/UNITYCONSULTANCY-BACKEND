@@ -8,6 +8,7 @@ import { Article } from './counselor/entities/article.entity';
 import { Schedule } from './counselor/entities/schedule.entity';
 import { Booking } from './client/entities/booking.entity';
 import { Review } from './counselor/entities/review.entity';
+import { Payment } from './client/entities/payment.entity';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -33,6 +34,7 @@ export const dataSourceOptions: DataSourceOptions = {
     Counselor,
     Schedule,
     Review,
+    Payment,
   ],
   migrations: ['src/migrations/**/*.ts'],
   subscribers: [],

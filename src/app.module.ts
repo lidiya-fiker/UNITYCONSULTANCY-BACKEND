@@ -47,4 +47,3 @@ import { NotificationModule } from './Notification/notification.module';
   providers: [AppService, SeederService],
 })
 export class AppModule {}
-
