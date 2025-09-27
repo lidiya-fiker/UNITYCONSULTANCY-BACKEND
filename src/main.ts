@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-
 import * as session from 'express-session';
 import * as passport from 'passport';
 
@@ -44,6 +43,10 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
   });
-  await app.listen(3000);
+
+  // Use environment PORT or fallback to 3000
+  const port = parseInt(process.env.PORT, 10) || 3000;
+  await app.listen(port);
+  console.log(`🚀 Application running on port ${port}`);
 }
 bootstrap();
