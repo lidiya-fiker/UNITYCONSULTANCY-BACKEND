@@ -1,4 +1,4 @@
-import 'dotenv/config'; // this loads .env variables globally
+import 'dotenv/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './auth/entity/user.entity';
 import { Client } from './client/entities/client.entity';
@@ -9,43 +9,32 @@ import { Schedule } from './counselor/entities/schedule.entity';
 import { Booking } from './client/entities/booking.entity';
 import { Review } from './counselor/entities/review.entity';
 
-import { Payment } from './client/entities/payment.entity';
-
-import { Notification } from './Notification/entities/notification.entity';
+const isProduction = process.env.NODE_ENV === 'production';
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME || 'unityCounsultancyy',
+  url: isProduction ? process.env.DATABASE_URL : undefined, // use DATABASE_URL in prod
+  host: isProduction ? undefined : process.env.DB_HOST || 'localhost',
+  port: isProduction ? undefined : parseInt(process.env.DB_PORT || '5432', 10),
+  username: isProduction ? undefined : process.env.DB_USERNAME || 'postgres',
+  password: isProduction ? undefined : process.env.DB_PASSWORD,
+  database: isProduction
+    ? undefined
+    : process.env.DB_NAME || 'unityCounsultancyy',
   synchronize: true,
   logging: true,
+  ssl: isProduction ? { rejectUnauthorized: false } : false, // Render Postgres requires SSL
   entities: [
     User,
     Client,
     AccountVerification,
-    Counselor,
-    // Rating,
-    Review,
-    Payment,
-    Article,
-    Schedule,
-    Booking,
-
-    User,
-    Client,
-    AccountVerification,
     Article,
     Booking,
     Counselor,
     Schedule,
     Review,
-    Notification,
   ],
   migrations: ['src/migrations/**/*.ts'],
-
   subscribers: [],
 };
 
