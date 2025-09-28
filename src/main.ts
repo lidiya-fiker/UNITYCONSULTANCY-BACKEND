@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: 'http://localhost:8080',
+    origin: 'http://unity-frontend-kouf.onrender.com',
     methods: 'GET,POST,PUT,DELETE,PATCH', // Adjust allowed methods as needed
     allowedHeaders: 'Content-Type, Authorization', // Adjust allowed headers
   });
